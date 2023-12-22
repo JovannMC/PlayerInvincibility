@@ -1,4 +1,4 @@
-# MentionChat
+# PlayerInvincibility
 
 Let players be invincible to other player attacks<br>
 
