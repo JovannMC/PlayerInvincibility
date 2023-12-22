@@ -8,18 +8,26 @@ commands:
     description: PlayerInvincibility command
     aliases: [pi, invincibility]
 permissions:
-    playerinvincibility.info:
-        description: Use /playerinvincibility command
-        default: true
-    playerinvincibility.reload:
-        description: Reload PlayerInvincibility
-        default: op
-    playerinvincibility.bypass:
-        description: Bypass a player's invincibility
-        default: op
-    playerinvincibility.add:
-        description: Add a player to the invincibility list
-        default: op
-    playerinvincibility.remove:
-        description: Remove a player from the invincibility list
-        default: op
+  playerinvincibility.*:
+    description: Gives access to all PlayerInvincibility commands
+    default: op
+    children:
+      playerinvincibility.reload: true
+      playerinvincibility.bypass: true
+      playerinvincibility.add: true
+      playerinvincibility.remove: true
+  playerinvincibility.info:
+    description: Use /playerinvincibility command
+    default: true
+  playerinvincibility.reload:
+    description: Reload PlayerInvincibility
+    default: op
+  playerinvincibility.bypass:
+    description: Bypass a player's invincibility
+    default: op
+  playerinvincibility.add:
+    description: Add a player to the invincibility list
+    default: op
+  playerinvincibility.remove:
+    description: Remove a player from the invincibility list
+    default: op
