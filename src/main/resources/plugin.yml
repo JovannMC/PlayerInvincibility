@@ -1,0 +1,4 @@
+name: PlayerInvincibility
+version: '${project.version}'
+main: me.jovannmc.playerinvincibility.PlayerInvincibility
+api-version: '1.13'
