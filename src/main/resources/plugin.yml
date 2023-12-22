@@ -9,7 +9,7 @@ commands:
     aliases: [pi, invincibility]
 permissions:
   playerinvincibility.*:
-    description: Gives access to all PlayerInvincibility commands
+    description: Gives access to all PlayerInvincibility permission nodes
     default: op
     children:
       playerinvincibility.reload: true

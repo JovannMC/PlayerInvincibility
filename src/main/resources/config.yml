@@ -1,10 +1,18 @@
 # PlayerInvinciblity config.yml
-invincible: [player1, player2, player3]
+# List of players who are invincible from other players' attacks
+invincible: ["player1", "player2", "player3"]
+
+# Logs when a player attempts to damage an invincible player in the console
 logInvincibleDamage: true
+# Sends a message to the damaged and damager when they attempt to damage an invincible player
 sendInvincibleMessage: true
-broadcastInvincibleMessage: true
+# Broadcasts a message to the server when a player attempts to damage an invincible player
+broadcastInvincibleMessage: false
+
+# Messages
 invincibleMessage: "You were attempted to be damaged by %damager% but you are invincible!"
 invincibleMessageDamager: "You attempted to damage %damaged% but they are invincible!"
 invincibleMessageBroadcast: "%damager% attempted to damage %damaged% but they are invincible!"
 
+# DO NOT TOUCH THIS
 configVersion: 1
