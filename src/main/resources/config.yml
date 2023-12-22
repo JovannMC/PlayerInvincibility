@@ -3,8 +3,8 @@ invincible: [player1, player2, player3]
 logInvincibleDamage: true
 sendInvincibleMessage: true
 broadcastInvincibleMessage: true
-invincibleMessage: "You were attempted to be damaged by %player% but you are invincible!"
-invincibleMessageDamager: "You attempted to damage %player% but they are invincible!"
-invincibleMessageBroadcast: "%damager% attempted to damage %player% but they are invincible!"
+invincibleMessage: "You were attempted to be damaged by %damager% but you are invincible!"
+invincibleMessageDamager: "You attempted to damage %damaged% but they are invincible!"
+invincibleMessageBroadcast: "%damager% attempted to damage %damaged% but they are invincible!"
 
 configVersion: 1

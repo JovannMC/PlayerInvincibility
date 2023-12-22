@@ -8,6 +8,8 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class PlayerInvincibility extends JavaPlugin implements Listener {
+    // TODO: maybe add code to check for other damage causes, especially if caused by other players (eg lava placed by player to bypass invincibility)
+    // TODO: use arraylists to reduce disk I/O
 
     @Override
     public void onEnable() {
@@ -17,6 +19,7 @@ public final class PlayerInvincibility extends JavaPlugin implements Listener {
             getServer().getPluginManager().disablePlugin(this);
         }
 
+        getServer().getPluginCommand("playerinvincibility").setExecutor(new PlayerInvincibilityCommand());
         getServer().getPluginManager().registerEvents(this, this);
         getLogger().info("PlayerInvincibility has been enabled!");
         getLogger().info("Invincible players: " + getConfig().getStringList("invincible").toString());
@@ -28,22 +31,25 @@ public final class PlayerInvincibility extends JavaPlugin implements Listener {
     }
 
     @EventHandler
-    public void onPlayerDamage(EntityDamageByEntityEvent event) {
-        // Check config if player is in "invincible", if on the list and player was damaged by another player, cancel the event
-        if (event.getEntity() instanceof Player && getConfig().getStringList("invincible").contains(event.getEntity().getName()) && event.getCause() == EntityDamageByEntityEvent.DamageCause.ENTITY_ATTACK && event.getDamager() instanceof Player) {
-            event.setCancelled(true);
+    public void onPlayerDamage(EntityDamageByEntityEvent e) {
+        // Check config if player is in "invincible", if on the list and player was damaged by another player, cancel the e
+        if (e.getEntity() instanceof Player && e.getDamager() instanceof Player && getConfig().getStringList("invincible").contains(e.getEntity().getName())) {
+            Player damaged = (Player) e.getEntity();
+            Player damager = (Player) e.getDamager();
+
+            if (damaged.hasPermission("playerinvincibility.bypass") || damager.hasPermission("playerinvincibility.bypass")) return;
+
             if (getConfig().getBoolean("logInvincibleMessage")) {
-                getLogger().info("Player " + event.getEntity().getName() + " was attempted to be damaged by " + event.getDamager().getName() + " but was invincible!");
+                getLogger().info("Player " + damaged.getName() + " was attempted to be damaged by " + damager.getName() + " but was invincible!");
             }
-
             if (getConfig().getBoolean("sendInvincibleMessage")) {
-                event.getEntity().sendMessage(ChatColor.translateAlternateColorCodes('&', getConfig().getString("invincibleMessage")).replace("%player%", event.getDamager().getName()));
-                event.getDamager().sendMessage(ChatColor.translateAlternateColorCodes('&', getConfig().getString("invincibleMessageDamager")).replace("%player%", event.getEntity().getName()));
+                damaged.sendMessage(ChatColor.translateAlternateColorCodes('&', getConfig().getString("invincibleMessage")).replace("%damager%", e.getDamager().getName()));
+                damager.sendMessage(ChatColor.translateAlternateColorCodes('&', getConfig().getString("invincibleMessageDamager")).replace("%damanged%", e.getEntity().getName()));
             }
-
             if (getConfig().getBoolean("broadcastInvincibleMessage")) {
-                getServer().broadcastMessage(ChatColor.translateAlternateColorCodes('&', getConfig().getString("invincibleMessageBroadcast")).replace("%player%", event.getEntity().getName()).replace("%damager%", event.getDamager().getName()));
+                getServer().broadcastMessage(ChatColor.translateAlternateColorCodes('&', getConfig().getString("invincibleMessageBroadcast")).replace("%damaged%", damaged.getName()).replace("%damager%", damager.getName()));
             }
+            e.setCancelled(true);
         }
     }
 }
